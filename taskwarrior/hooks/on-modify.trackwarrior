@@ -1,0 +1,66 @@
+#!/usr/bin/env node
+
+const { sameArray } = require('./library/tools')
+const { Init, ACTION_CURRENT_START, ACTION_OLD_START, ACTION_START, ACTION_STOP } = require('./library/Init');
+const { Record, STATUS_DELETED } = require('./library/Record');
+const { settings, config } = require('./library/settings');
+
+const main = async () => {
+    const { input, call, flags, action } = await Init();
+
+    const old = new Record(input.old);
+    const current = new Record(input.current);
+    
+    if (action) {
+         // if one is started and has action
+         if (action == ACTION_START) {
+            
+             const totalActive = parseInt((await call('task', ['+ACTIVE', 'status:pending', 'count', 'rc.verbose:off'], true)).trim());
+             const maxActive = config.getInt('max_active_tasks', settings.maxActiveTasks);
+             
+            if (totalActive + 1 > maxActive) {
+                console.log(`Only ${totalActive} task(s) can be active at time. See 'max_active_tasks' in .taskrc.`);
+                process.exit(1);
+            }
+
+            await call('timew', ['stop', ':yes'], true)
+         }
+        
+        await call('timew', [action, ...current.getTags(), ':yes'])
+    } else if (flags(ACTION_OLD_START | ACTION_CURRENT_START)) {
+        // if both are started
+        const oldTags = old.getTags()
+        const currentTags = current.getTags()
+        
+        if (!sameArray(oldTags, currentTags)) {
+            await call('timew', ['untag', '@1', ...oldTags, ':yes']);
+            await call('timew', ['tag', '@1', ...currentTags, ':yes']);
+        }
+
+        const oldAnnotation = old.getAnnotation();
+        const currentAnnotation = current.getAnnotation();
+        
+        if (oldAnnotation != currentAnnotation) {
+            await call('timew', ['annotate', '@1', currentAnnotation]);
+        }
+    }
+
+    if ((config.getBool('erase_time_on_delete', settings.eraseTimeOnDelete) && current.getStatus() == STATUS_DELETED) || current.hasCleartime()) {
+        if (current.hasCleartime() && flags(ACTION_CURRENT_START)) {
+            current.delete('start');
+        }
+        const ids = await call('timew', ['trackwarrior-ids.js', current.getId(), current.getEntry(), '-', 'now', ':ids'], true);
+        
+        if (ids.length > 0) {
+            await call('timew', ['delete', ...ids.split(' ')], false);
+            current.setDuration('0');
+        }
+    } else {
+        const duration = await call('timew', ['trackwarrior-duration.js', current.getId(), current.getEntry(), '-', 'now'], true);
+        current.setDuration(duration);
+    }
+    
+    process.stdout.write(current.output());
+};
+
+main();
