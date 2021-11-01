@@ -1,0 +1,23 @@
+#!/usr/bin/env node
+
+const readline = require('readline');
+const { Record } = require('./library/Record');
+
+const main = async () => {
+    let input = '';
+    const rl = readline.createInterface({
+        input: process.stdin,
+        output: process.stdout,
+    });
+   
+    for await (const line of rl) {
+        input += line.toString()
+    }
+    
+    const current = new Record(JSON.parse(input));
+    
+    current.setDuration('0');
+    process.stdout.write(current.output());
+};
+
+main();

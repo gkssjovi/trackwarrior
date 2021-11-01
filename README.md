@@ -13,7 +13,7 @@ cp -r ./taskwarrior/hooks/. ~/.task/hooks
 cp -r ./timewarrior/extensions/. ~/.timewarrior/extensions
 
 cd ~/.task/hooks
-chmod +x on-modify.trackwarrior
+chmod +x on-modify.trackwarrior on-add.trackwarrior
 
 cd ~/.timewarrior/extensions
 chmod +x trackwarrior-duration.js trackwarrior-ids.js
