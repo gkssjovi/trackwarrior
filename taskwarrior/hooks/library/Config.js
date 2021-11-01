@@ -27,7 +27,7 @@ class Config {
     
     getInt(key) {
         const value = this.get(key);
-        return !isNaN(value) ? value : 0;
+        return !isNaN(Number(value)) ? Number(value) : 0;
     }
 
     getArray(key, defaultValue = []) {

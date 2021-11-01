@@ -1,5 +1,5 @@
 
-const { formatTime } = require('./tools')
+const { formatTime, formatWithSpaces } = require('./tools')
 const { config, settings } = require('./settings')
 
 const STATUS_DELETED = 'deleted';
@@ -25,7 +25,7 @@ class Record {
             });
         }
     }
-    
+     
     hasCleartime() {
         return this.cleartime;
     }
@@ -47,9 +47,58 @@ class Record {
     }
     
     setDuration(value) {
+        console.log(value);
         value = String(value).trim();
-        const duration = !isNaN(parseInt(value)) ? formatTime(value) : formatTime('0');
-        this.set('trackwarrior', duration);
+        const duration = !isNaN(parseInt(value)) ? parseInt(value) : 0;
+
+        this.set('trackwarrior', duration != 0 ? formatTime(String(duration)) : '');
+
+        let ratePerHour = config.getInt('rate_per_hour', settings.ratePerHour);
+        const currencyFormat = config.getArray('currency_format', settings.currencyFormat);
+        
+        const project = this.get('project', '');
+        if (project.length > 0) {
+            const ratePerHourProject = config.getArray('rate_per_hour_project', settings.ratePerHourProject);
+            const rates = {};
+            for (let item of ratePerHourProject) {
+                const [projectName, projectRate] = item.split(':');
+                rates[projectName.trim()] = !isNaN(Number(projectRate.trim())) ? Number(projectRate.trim()) : 0;
+            }
+            
+            if (Object.keys(rates).includes(project)) {
+                ratePerHour = rates[project];
+            }
+        }
+        
+        const total = ((ratePerHour / 3600) * duration);
+        const formatConfig = {
+            style: 'currency',
+            currency: currencyFormat[1],
+            useGrouping: true,
+        };
+        
+        const amountDecimals = {};
+        
+        const decimals = config.getInt('rate_per_hour_decimals', settings.ratePerHourDecimals);
+        
+        const amountFormatter = Intl.NumberFormat(currencyFormat[0], {
+            ...formatConfig,
+            ...amountDecimals,
+            minimumFractionDigits: decimals,
+            maximumFractionDigits: decimals,
+        });
+        const rateFormatter = Intl.NumberFormat(currencyFormat[0], {
+            ...formatConfig,
+            minimumFractionDigits: 0,
+            maximumFractionDigits: 0,
+        });
+        
+        const ratelFormatted = ratePerHour == 0 ? '' : `${rateFormatter.format(ratePerHour)}`;
+        this.set('trackwarrior_rate', ratelFormatted);
+
+        const spaces = config.getInt('rate_format_with_spaces', settings.rateFormatWithSpaces);
+        const totalFormatted = total == 0 ? '' : formatWithSpaces(amountFormatter.format(total), spaces);
+        this.set('trackwarrior_total_amount', totalFormatted);
     }
     
     hasStart() {

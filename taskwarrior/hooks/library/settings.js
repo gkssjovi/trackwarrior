@@ -11,6 +11,11 @@ const settings = {
     eraseTimeOnDelete: false, // if 'true' erase the time tracking when you delete the task
     clearTimeTags: ['cleartime', 'ctime', 'deletetime', 'dtime'],
     createTimeWhenAddTask: false,
+    ratePerHour: 1,
+    currencyFormat: ['de-De', 'EUR'],
+    ratePerHourProject: ['Inbox:1', 'Other:10'],
+    ratePerHourDecimals: 2,
+    rateFormatWithSpaces: 10,
 };
 
 const configObj = {};

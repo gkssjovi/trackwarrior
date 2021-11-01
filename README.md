@@ -27,6 +27,14 @@ uda.trackwarrior.type=string
 uda.trackwarrior.label=Total active time
 uda.trackwarrior.values=
 
+uda.trackwarrior_rate.type=string
+uda.trackwarrior_rate.label=Rate
+uda.trackwarrior_rate.values=
+
+uda.trackwarrior_total_amount.type=string
+uda.trackwarrior_total_amount.label=Total amount
+uda.trackwarrior_total_amount.values=
+
 # this allow only one task to be active
 max_active_tasks=1 
 # when you delete the task, the time tracking will be also be deleted from timewarrior 
@@ -34,24 +42,17 @@ erase_time_on_delete=false
 # those are tags in taskwarrior.When you add one of them the time tracking will be deleted from timewarrior
 clear_time_tags=cleartime,ctime,deletetime,dtime
 create_time_when_add_task=false
-```
-Or write those commands into your terminal
-```sh
-task config uda.trackwarrior.type string
-task config uda.trackwarrior.label Total active time
-task config uda.trackwarrior.values ''
-
-task config max_active_tasks 1
-task config erase_time_on_delete false
-task config clear_time_tags cleartime,ctime,deletetime,dtime
-task config create_time_when_add_task false
-
+rate_per_hour=10
+rate_per_hour_decimals=2
+rate_per_hour_project=Inbox:0,Other:10
+rate_format_with_spaces=10
+currency_format=de-DE,EUR
 ```
 
 To display the new column on the next report modify the `~/.taskrc` file
 ```sh
-report.next.labels=ID,St,Active,Age,Time,...,Description,Urg
-report.next.columns=id,status.short,start.age,entry.age,trackwarrior,...,description,urgency
+report.next.labels=ID,St,Active,Age,Time,Rate,Total,...,Description,Urg
+report.next.columns=id,status.short,start.age,entry.age,trackwarrior,trackwarrior_rate,trackwarrior_total_amount,...,description,urgency
 ```
 ## Examples
 
