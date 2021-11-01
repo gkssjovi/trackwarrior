@@ -10,6 +10,7 @@ const settings = {
     maxActiveTasks: 1,       // if '1' you can start one one task at the time
     eraseTimeOnDelete: false, // if 'true' erase the time tracking when you delete the task
     clearTimeTags: ['cleartime', 'ctime', 'deletetime', 'dtime'],
+    createTimeWhenAddTask: false,
 };
 
 const configObj = {};

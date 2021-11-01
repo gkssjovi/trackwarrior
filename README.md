@@ -33,6 +33,7 @@ max_active_tasks=1
 erase_time_on_delete=false 
 # those are tags in taskwarrior.When you add one of them the time tracking will be deleted from timewarrior
 clear_time_tags=cleartime,ctime,deletetime,dtime
+create_time_when_add_task=false
 ```
 Or write those commands into your terminal
 ```sh
@@ -43,6 +44,8 @@ task config uda.trackwarrior.values ''
 task config max_active_tasks 1
 task config erase_time_on_delete false
 task config clear_time_tags cleartime,ctime,deletetime,dtime
+task config create_time_when_add_task false
+
 ```
 
 To display the new column on the next report modify the `~/.taskrc` file

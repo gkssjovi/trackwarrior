@@ -2,6 +2,7 @@
 
 const readline = require('readline');
 const { Record } = require('./library/Record');
+const { settings, config } = require('./library/settings');
 
 const main = async () => {
     let input = '';
@@ -16,7 +17,10 @@ const main = async () => {
     
     const current = new Record(JSON.parse(input));
     
-    current.setDuration('0');
+    if (config.getBool('create_time_when_add_task', settings.createTimeWhenAddTask)) {
+        current.setDuration('0');
+    }
+    
     process.stdout.write(current.output());
 };
 
