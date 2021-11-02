@@ -47,12 +47,11 @@ class Record {
     }
     
     setDuration(value) {
-        console.log(value);
         value = String(value).trim();
         const duration = !isNaN(parseInt(value)) ? parseInt(value) : 0;
 
         this.set('trackwarrior', duration != 0 ? formatTime(String(duration)) : '');
-
+        
         let ratePerHour = config.getInt('rate_per_hour', settings.ratePerHour);
         const currencyFormat = config.getArray('currency_format', settings.currencyFormat);
         
