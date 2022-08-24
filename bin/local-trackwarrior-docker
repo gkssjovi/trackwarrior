@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+source_path="$(readlink -f "$(readlink "${BASH_SOURCE[0]}")")"
+source_dir="$(dirname "${source_path}")"
+
+docker build -t trackwarrior/trackwarrior:latest "$source_dir"
+
+"$source_dir"/trackwarror-docker "$@"
