@@ -1,0 +1,10 @@
+#!/bin/bash
+
+set -euo pipefail
+
+docker run --rm \
+  -it \
+  -v "/etc/timezone:/etc/timezone:ro" \
+  -v "/etc/localtime:/etc/localtime:ro" \
+  -v "$HOME/.trackwarrior-docker:/root" \
+  trackwarrior/trackwarrior:latest "$@"

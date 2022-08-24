@@ -3,7 +3,28 @@
 This extension create a link between [taskwarrior](https://github.com/GothenburgBitFactory/taskwarrior) and  [timewarrior](https://github.com/GothenburgBitFactory/timewarrior) that allows you to keep track of time spend on tasks. 
 The time will be displayed in a new column in taskwarrior.
 
-## Installation
+## Docker
+
+```sh
+git clone https://github.com/gkssjovi/trackwarrior.git
+cd trackwarrior
+
+sudo ln -s "$PWD/trackwarrior-docker" /usr/local/bin/trackwarrior
+```
+
+### Use tasksh as main frontend
+```sh
+sudo rm /usr/local/bin/trackwarrior
+sudo ln -s "$PWD/trackwarrior-docker-tasksh" /usr/local/bin/trackwarrior
+```
+
+### Use taskwarrior-tui as main frontend
+```sh
+sudo rm /usr/local/bin/trackwarrior
+sudo ln -s "$PWD/trackwarrior-docker-tui" /usr/local/bin/trackwarrior
+```
+
+## Local Installation
 
 ```sh
 git clone https://github.com/gkssjovi/trackwarrior.git
@@ -55,7 +76,34 @@ To display the new column on the next report modify the `~/.taskrc` file
 report.next.labels=ID,St,Active,Age,Time,Rate,Total,...,Description,Urg
 report.next.columns=id,status.short,start.age,entry.age,trackwarrior,trackwarrior_rate,trackwarrior_total_amount,...,description,urgency
 ```
-## Examples
+
+## Usage
+If you installed the docker version, just run `trackwarrior` to open the configured fronted (default: fish shell).
+
+## Integrate with starship
+1) Locally install taskwarrior
+2) Install [starship](https://starship.rs/guide/#%F0%9F%9A%80-installation)
+3) Set the correct rights for your local taskwarrior to read the data from the container
+```sh
+# trackwarrior needs to be used at least once
+sudo chown "$(id -u):$(id -g)" ~/.trackwarrior-docker/.task/pending.data
+```
+
+4) Add the following to your starship.toml
+
+```toml
+[custom.current_task]
+command = """TASKRC=~/.trackwarrior-docker/.taskrc TASKDATA=~/.trackwarrior-docker/.task unbuffer task starship-project | head -5 | tail -1 | sed "s/No matches./[No active task]/" | xargs"""
+when = true
+shell = "bash"
+```
+
+## Usage Examples
+
+If you use a tasksh as a frontend, you can use the same commands as shown here,
+but without typing task in the beginning.
+
+If you use taskwarrior-tui as a frontend, check the [taskwarrior-tui documentation](https://kdheepak.com/taskwarrior-tui/) instead.
 
 ![Example](./assets/example.gif)
 
