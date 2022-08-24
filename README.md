@@ -41,7 +41,7 @@ max_active_tasks=1
 erase_time_on_delete=false 
 # those are tags in taskwarrior.When you add one of them the time tracking will be deleted from timewarrior
 clear_time_tags=cleartime,ctime,deletetime,dtime
-update_time_tags=updatetime,utime,recalc
+update_time_tags=update,updatetime,utime,recalc
 create_time_when_add_task=false
 rate_per_hour=10
 rate_per_hour_decimals=2
@@ -110,6 +110,8 @@ or
 
 Update time tracking 
 
+`task 1 mod +update`
+or
 `task 1 mod +updatetime`
 or
 `task 1 mod +utime`
