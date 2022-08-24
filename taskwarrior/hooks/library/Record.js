@@ -15,13 +15,15 @@ class Record {
         this.data = data;
 
         if (this.data.tags) {
+            const clearTimeTags = config.getArray('clear_time_tags', settings.clearTimeTags);
+            const updateTimeTags = config.getArray('update_time_tags', settings.clearTimeTags);
             this.data.tags = this.data.tags.filter(tag => {
-                const clearTimeTags = config.getArray('clear_time_tags', settings.clearTimeTags);
                 const condition = !clearTimeTags.includes(tag);
                 if (!condition) {
                     this.cleartime = true;
                 }
-                return condition;
+
+                return condition && !updateTimeTags.includes(tag);
             });
         }
     }
