@@ -5,5 +5,4 @@ set -euo pipefail
 source_path="$(readlink -f "$(readlink "${BASH_SOURCE[0]}")")"
 source_dir="$(dirname "${source_path}")"
 
-source_dir=$(dirname "$PRG")
 "$source_dir"/trackwarrior-docker tasksh
