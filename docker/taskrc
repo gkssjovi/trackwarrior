@@ -48,6 +48,7 @@ erase_time_on_delete=false
 
 # those are tags in taskwarrior.When you add one of them the time tracking will be deleted from timewarrior
 clear_time_tags=cleartime,ctime,deletetime,dtime
+update_time_tags=updatetime,utime,update
 rate_per_hour=10
 rate_per_hour_decimals=2
 rate_per_hour_project=Inbox:0,Other:10
