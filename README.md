@@ -9,19 +9,19 @@ The time will be displayed in a new column in taskwarrior.
 git clone https://github.com/gkssjovi/trackwarrior.git
 cd trackwarrior
 
-sudo ln -s "$PWD/trackwarrior-docker" /usr/local/bin/trackwarrior
+sudo ln -s "$PWD/bin/trackwarrior-docker" /usr/local/bin/trackwarrior
 ```
 
 ### Use tasksh as main frontend
 ```sh
 sudo rm /usr/local/bin/trackwarrior
-sudo ln -s "$PWD/trackwarrior-docker-tasksh" /usr/local/bin/trackwarrior
+sudo ln -s "$PWD/bin/trackwarrior-docker-tasksh" /usr/local/bin/trackwarrior
 ```
 
 ### Use taskwarrior-tui as main frontend
 ```sh
 sudo rm /usr/local/bin/trackwarrior
-sudo ln -s "$PWD/trackwarrior-docker-tui" /usr/local/bin/trackwarrior
+sudo ln -s "$PWD/bin/trackwarrior-docker-tui" /usr/local/bin/trackwarrior
 ```
 
 ## Local Installation
